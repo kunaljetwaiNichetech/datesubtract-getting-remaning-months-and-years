@@ -7,9 +7,7 @@ import "moment-precise-range-plugin";
 
 function App() {
   let startDate = moment("2024-04-01");
-  let endDate = moment("2024-06-01");
-
- 
+  let endDate = moment("2024-06-01")
   // let diff=moment.preciseDiff(startDate,endDate,true)
   // console.log("the diff",diff)
   // let dates = [];

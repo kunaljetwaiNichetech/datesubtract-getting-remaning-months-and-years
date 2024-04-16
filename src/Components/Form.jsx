@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import DatePicker from "react-datepicker";
 import moment, { preciseDiff } from "moment";
 import "react-datepicker/dist/react-datepicker.css";
@@ -12,7 +12,10 @@ function Form() {
     cheackS: "",
     enddate: "",
     cheackE: "",
+    RemyMonths: "",
+    Remyear:""
   });
+  console.log("formdata", formdata);
   let [listofusers, Setlistofusers] = useState([]);
   const [error, seterror] = useState({
     sdate: "",
@@ -97,6 +100,7 @@ function Form() {
   ////////////////end of date change////////////////
   ///////////////
   const dateMonthsSubtract = () => {
+
     let Years7Date = moment().subtract(7, "years");
     let cureewntdate = moment();
     console.log(Years7Date.format("MM/DD/YYYY"));
@@ -114,8 +118,15 @@ function Form() {
     // console.log(remaningMonthsandyears);
     let rrrr = preciseDiff(Years7Date, remaningMonthsandyears, true);
     console.log(rrrr);
+    setformdata({
+      ...formdata,RemyMonths: rrrr.months,Remyear: rrrr.years,
+    });
 
-    return rrrr;
+
+    // setformdata({ ...formdata, ["Remmonthsandyears"]: rrrr });
+    // setformdata({...formdata,['RemyMonths']:rrrr.months})
+    // setformdata({...formdata,['Remyear']:rrrr.years})
+    // return rrrr;
 
     // let sy=moment(s).startOf('year').format("MM/DD/YYYY")
     // let ey=moment(e).endOf('year').format("MM/DD/YYYY")
@@ -137,41 +148,50 @@ function Form() {
     // console.log(befm.years+aefm.years);
     // console.log(befm.months+aefm.months);
     // console.log(befm.days+aefm.days);
+    return setformdata({
+      ...formdata,
+      RemyMonths: rrrr.months,
+      Remyear: rrrr.years,
+    });
   };
-
   ////////////////////////
   const handelsubmit = () => {
     console.log(cheachRange());
-    if (cheachRange()==true){
 
-    Setlistofusers([...listofusers, formdata]);
+
+
+
+    if (cheachRange()==true){
+    dateMonthsSubtract()
+      console.log("formadaattatat",formdata)
+      Setlistofusers([...listofusers,formdata]);
     }else{
       alert("selected date should be within last 7 years only")
     }
-    console.log("this is list of users", listofusers);
     // setformdata({
-    //   name: "",
-    //   phone: "",
-    //   address: "",
-    //   startdate: "",
-    //   cheackS: "",
-    //   enddate: "",
-    //   cheackE: "",
-    // });
-  };
+      //   name: "",
+      //   phone: "",
+      //   address: "",
+      //   startdate: "",
+      //   cheackS: "",
+      //   enddate: "",
+      //   cheackE: "",
+      // });
+    };
 
-  /////////////////cheacking dates working//////////
-
-  let syear = moment().subtract(7, "year");
-  let startyear = syear.format("MM/DD/YYYY");
-
-  //  console.log("startYear --", moment(syear._d).format("DD/MM/YYYY"));
-  let eyear = moment();
-  let endyear = eyear.format("MM/DD/YYYY");
-  //  console.log("endYear --", moment(eyear._d).format("DD/MM/YYYY"));
-
-  const cheachRange = () => {
-    if (formdata.startdate && formdata.enddate) {
+    console.log("this is list of users", listofusers);
+    /////////////////cheacking dates working//////////
+    
+    let syear = moment().subtract(7, "year");
+    let startyear = syear.format("MM/DD/YYYY");
+    
+    //  console.log("startYear --", moment(syear._d).format("DD/MM/YYYY"));
+    let eyear = moment();
+    let endyear = eyear.format("MM/DD/YYYY");
+    //  console.log("endYear --", moment(eyear._d).format("DD/MM/YYYY"));
+    
+    const cheachRange = () => {
+      if (formdata.startdate && formdata.enddate) {
       console.log(formdata.startdate);
       console.log(formdata.enddate);
       console.log(startyear)
@@ -182,23 +202,23 @@ function Form() {
         return false
       }
       // if (
-      //   formdata.startdate >= startyear &&
-      //   formdata.startdate <= endyear &&
-      //   formdata.enddate >= startyear &&
-      //   formdata.enddate <= endyear
-      // ) {
-      //   console.log("yes");
-      //   return true;
-      // } else {
-      //   console.log("no");
-      //   return false;
+        //   formdata.startdate >= startyear &&
+        //   formdata.startdate <= endyear &&
+        //   formdata.enddate >= startyear &&
+        //   formdata.enddate <= endyear
+        // ) {
+          //   console.log("yes");
+          //   return true;
+          // } else {
+            //   console.log("no");
+            //   return false;
       // }
-    
+      
     }
   };
 
   // cheachRange();
-
+  
   // function Last7years() {
   //   const today = new Date();
 
@@ -334,9 +354,9 @@ function Form() {
                 <td>{item.address}</td>
                 <td>{item.startdate}</td>
                 <td>{item.enddate}</td>
-                <td>{` ${dateMonthsSubtract().months} months ${
-                  dateMonthsSubtract().years
-                } years`}</td>
+                <td>{` ${item.RemyMonths} months ${item.Remyear} years`}</td>
+                {/* <td>{` ${dateMonthsSubtract().months} months ${dateMonthsSubtract().years} years`}</td> */}
+
                 {/* <td>{dateMonthsSubtract().years}</td>
               <td>{dateMonthsSubtract().months}</td> */}
               </tr>
